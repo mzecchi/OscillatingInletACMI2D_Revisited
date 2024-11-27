@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                |
+| \\      /  F ield         | cfMesh: A library for mesh generation          |
+|  \\    /   O peration     |                                                |
+|   \\  /    A nd           | Author: Franjo Juretic                         |
+|    \\/     M anipulation  | E-mail: franjo.juretic@c-fields.com            |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version   2.0;
+    format    ascii;
+    class     dictionary;
+    location  "system";
+    object    meshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+surfaceFile "./constant/triSurface/moving1.fms";
+
+minCellSize 30.0;
+
+maxCellSize 30.0;
+
+boundaryLayers
+{
+    nLayers 7;
+
+    thicknessRatio 1.2;
+	
+	patchBoundaryLayers
+    {
+		"moving1_coupled"
+        {
+            nLayers 0;
+			thicknessRatio 1;
+			maxFirstLayerThickness 0;
+        }
+		"moving1_inlet"
+        {
+            nLayers 0;
+			thicknessRatio 1;
+			maxFirstLayerThickness 0;
+        }
+	}
+}
+
+renameBoundary
+{
+    
+    newPatchNames
+    {
+        "moving1_coupled"
+        {
+            type    patch;
+            newName moving1_coupled;
+        }
+
+        "moving1_inlet"
+        {
+            type    patch;
+            newName moving1_inlet;
+        }
+		
+		"moving1_wall"
+        {
+            type    wall;
+            newName moving1_wall;
+        }
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

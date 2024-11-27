@@ -1,0 +1,107 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+	version     2.0;
+	format      ascii;
+	class       dictionary;
+	object      createBafflesDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+internalFacesOnly false;
+
+// Baffles to create.
+baffles
+{
+	
+	ACMI_moving
+	{
+		type		faceZone;
+		zoneName	moving_coupled_faces;
+		patches
+		{
+			// create cyclic ACMI patch
+			master
+			{
+				//- Master side patch
+				name            ACMI_moving_coupled;
+				type            cyclicACMI;
+				matchTolerance  0.0001;
+				neighbourPatch  ACMI_stationary_coupled;
+				nonOverlapPatch moving_blockage;
+				transform       noOrdering;
+			}
+			slave // dummy entries only
+			{
+				//- Slave side patch
+				name            ACMI_moving_coupled;
+				type            patch;
+			}
+			// create blockage patch
+			master2
+			{
+				//- Master side patch
+				name            moving_blockage;
+				type            wall;
+			}
+			slave2 // dummy entries only
+			{
+				//- Slave side patch
+				name            moving_blockage;
+				type            patch;
+			}
+			
+		}
+	}
+	
+	ACMI_stationary
+	{
+		
+		type		faceZone;
+		zoneName	stationary_coupled_faces;
+		
+		patches
+		{
+			// create cyclic ACMI patch
+			master
+			{
+				//- Master side patch
+				name            ACMI_stationary_coupled;
+				type            cyclicACMI;
+				matchTolerance  0.0001;
+				neighbourPatch  ACMI_moving_coupled;
+				nonOverlapPatch stationary_blockage;
+				transform       noOrdering;
+			}
+			slave // dummy entries only
+			{
+				//- Slave side patch
+				name            ACMI_stationary_coupled;
+				type            patch;
+			}
+			// create blockage patch
+			master2
+			{
+				//- Master side patch
+				name            stationary_blockage;
+				type            wall;
+			}
+			slave2 // dummy entries only
+			{
+				//- Slave side patch
+				name            stationary_blockage;
+				type            patch;
+			}
+			
+		}
+	}
+	
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

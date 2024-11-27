@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // Get both sides of ami
+    // ~~~~~~~~~~~~~~~~~~~~~
+
+    // Create faceZone for patch couple1
+    {
+        name    moving_coupled_faceSet;
+        type    faceSet;
+        action  new;
+        source  patchToFace;
+        patch   moving_coupled;
+    }
+    {
+        name    moving_coupled_faces;
+        type    faceZoneSet;
+        action  new;
+        source  setToFaceZone;
+        faceSet moving_coupled_faceSet;
+    }
+
+    // Create first faceZone for patch stationary_coupled
+    {
+        name   	stationary_coupled_faceSet;
+        type    faceSet;
+        action  new;
+        source  patchToFace;
+        patch   stationary_coupled;
+    }
+    {
+        name    stationary_coupled_faces;
+        type    faceZoneSet;
+        action  new;
+        source  setToFaceZone;
+        faceSet stationary_coupled_faceSet;
+    }
+
+);
+
+
+// ************************************************************************* //
